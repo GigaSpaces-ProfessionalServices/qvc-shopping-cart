@@ -34,7 +34,7 @@ public class CartController {
   }
 
   @RequestMapping(value = "/cart/", method = RequestMethod.POST)
-  public ResponseEntity<Void> createCart(@RequestParam String cartJson) {
+  public ResponseEntity<Void> createCart(@RequestBody String cartJson) {
 
     int cartId = getCartId(cartJson);
     System.out.println("Creating cart " + cartId);
@@ -63,7 +63,7 @@ public class CartController {
   }
 
   @RequestMapping(value = "/cart/{id}", method = RequestMethod.PUT)
-  public ResponseEntity<Cart> updateCart(@PathVariable("id") int id, @RequestParam String cartJson) {
+  public ResponseEntity<Cart> updateCart(@PathVariable("id") int id, @RequestBody String cartJson) {
     System.out.println("Updating User " + id);
 
     Cart currentCart = cartService.getCart(id);

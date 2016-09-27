@@ -12,11 +12,6 @@
         http://www.openspaces.org/schema/events http://www.openspaces.org/schema/10.0/events/openspaces-events.xsd
         http://www.openspaces.org/schema/remoting http://www.openspaces.org/schema/10.0/remoting/openspaces-remoting.xsd">
 
-  <!-- Spring property configurer which allows us to use system properties (such as user.name). -->
-  <bean id="propertiesConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-    <property name="location" value="file:///${QVC_CONFIG_DIR}/gasp-config.properties"/>
-  </bean>
-
   <context:component-scan base-package="com.qvc.shoppingcart"/>
 
   <mvc:annotation-driven/>
@@ -31,7 +26,7 @@
   <os-remoting:annotation-support/>
 
   <!-- Space Proxy -->
-  <os-core:space id="space" url="jini://*/*/cartSpace"/>
+  <os-core:space id="space" url="jini://*/*/space"/>
 
   <!-- Define the GigaSpace instance that the application will use to access the space  -->
   <os-core:giga-space id="gigaSpace" space="space"/>
