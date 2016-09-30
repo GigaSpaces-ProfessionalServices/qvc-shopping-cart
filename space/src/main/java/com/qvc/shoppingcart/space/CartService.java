@@ -1,6 +1,7 @@
 package com.qvc.shoppingcart.space;
 
 import com.gigaspaces.document.DocumentProperties;
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -25,9 +26,17 @@ public class CartService implements ICartService {
   GigaSpace gigaSpace;
 
   public String getCart(@Routing int cartId) {
-    //return gigaSpace.readById(cartId);
     System.out.printf("GETTING CART [%d]\n", cartId);
-    String cartJson = String.format("Cart for id [%d]", cartId);
+    Cart cart = gigaSpace.readById(Cart.class, cartId);
+    Integer id = cart.getId();
+    String user = cart.getUser();
+    Gson gson = new Gson();
+    String itemsJson = gson.toJson(cart.getPayload().get("items"));
+    StringBuilder sb = new StringBuilder("{");
+    sb.append("'id':").append(id).append(",").append("'user':").append(user).append(",").append("'items':").append(itemsJson);
+    sb.append("}");
+    String cartJson = sb.toString();
+    System.out.printf("cartJson = %s\n", cartJson);
     return cartJson;
   }
 
