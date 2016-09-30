@@ -38,31 +38,13 @@ public class CartService implements ICartService {
 
   @Override
   public void mergeCarts(List<Integer> cartIds) {
-
   }
 
-
-//  public Integer createCart(SpaceDocument cartPayload) {
-//    // Convert cart payload
-//    Cart c = createMyCart(cartPayload);
-//    Integer leaseTime = 10000; // getLeaseByRegion(cartPayload.getRegion());
-//    gigaSpace.write(c, leaseTime);
-//    return c.getId();
-//  }
-
-//  private Cart createMyCart(SpaceDocument cartPayload) {
-//    return null;
-//  }
-
   public boolean updateCart(@Routing int cartId, String cartJson) {
-    // examine the contents of cartPayload
-
+//    examine the contents of cartPayload
 //		gigaSpace.write(shipping, );
-//
 //		gigaSpace.write(address);
-//
 //		gigaSpace.write(mailing...);
-
     System.out.printf("Cart [%d] modified using: %s\n", cartId, cartJson);
     return true;
   }
@@ -92,6 +74,5 @@ public class CartService implements ICartService {
     System.out.printf("Cart [%d] created using: %s\n", id, payloadJson);
     return true;
   }
-
 
 }
