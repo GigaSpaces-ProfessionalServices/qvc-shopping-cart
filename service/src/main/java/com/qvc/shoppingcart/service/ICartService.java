@@ -1,20 +1,18 @@
 package com.qvc.shoppingcart.service;
 
-import com.gigaspaces.document.SpaceDocument;
-import com.qvc.shoppingcart.common.Cart;
 import org.openspaces.remoting.Routing;
 
 import java.util.List;
 
 public interface ICartService {
 
-  Cart getCart(@Routing int cartId);
+  String getCart(@Routing int cartId);
 
   boolean isCartExist(int cartId);
 
-  boolean createCart(@Routing int cartId, SpaceDocument cartPayload);
+  boolean createCart(@Routing int cartId, String cartJson);
 
-  boolean updateCart(@Routing int cartId, SpaceDocument cartPayload);
+  boolean updateCart(@Routing int cartId, String cartJson);
 
   // Broadcast operations
   void mergeCarts(List<Integer> cartIds);

@@ -56,6 +56,11 @@
       <scope>compile</scope>
     </dependency>
 
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>1.0.13</version>
+    </dependency>
 
     <!-- Web PU -->
     <dependency>

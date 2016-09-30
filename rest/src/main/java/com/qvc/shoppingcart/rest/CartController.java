@@ -3,8 +3,8 @@ package com.qvc.shoppingcart.rest;
 import com.gigaspaces.document.SpaceDocument;
 import com.qvc.shoppingcart.common.Cart;
 import com.qvc.shoppingcart.service.ICartService;
+import org.openspaces.remoting.ExecutorProxy;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,44 +12,81 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.util.UriComponentsBuilder;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 @RestController
 public class CartController {
 
-  @Autowired
+  @ExecutorProxy
   private ICartService cartService;
 
-  @RequestMapping(value = "/cart/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<Cart> getCart(@PathVariable("id") int id) {
+  @RequestMapping(value = "/cart/{id}", method = RequestMethod.GET)
+  public String getCart(
+          @PathVariable("id") int id,
+          HttpServletResponse response
+  ) throws IOException
+  {
     System.out.println("Fetching cart with id " + id);
-    Cart cart = cartService.getCart(id);
-    if (cart == null) {
-      System.out.println("User with id " + id + " not found");
-      return new ResponseEntity<Cart>(HttpStatus.NOT_FOUND);
-    }
-    return new ResponseEntity<Cart>(cart, HttpStatus.OK);
+
+    PrintWriter pw = response.getWriter();
+
+    String cartJson = cartService.getCart(id);
+    pw.print(cartJson);
+
+//    pw.printf("Cart with id [%d]", id);
+
+    pw.flush();
+
+//    Cart cart = cartService.getCart(id);
+//    if (cart == null) {
+//      System.out.println("Cart with id " + id + " not found");
+//      return new ResponseEntity<Cart>(HttpStatus.NOT_FOUND);
+//    }
+
+    pw.close();
+
+    return null;
   }
 
-  @RequestMapping(value = "/cart/", method = RequestMethod.POST)
-  public ResponseEntity<Void> createCart(@RequestBody String cartJson) {
+  @RequestMapping(value = "/cart/{id}", method = RequestMethod.POST)
+  public String createCart(
+          @PathVariable("id") int id,
+          @RequestBody String cartJson,
+          HttpServletResponse response
+  ) throws IOException
+  {
+    System.out.printf("cartJson => %s\n", cartJson);
 
-    int cartId = getCartId(cartJson);
-    System.out.println("Creating cart " + cartId);
+    boolean success = cartService.createCart(id, cartJson);
 
-    if (cartService.isCartExist(cartId)) {
-      System.out.println("A cart with id " + cartId + " already exists");
-      return new ResponseEntity<Void>(HttpStatus.CONFLICT);
+    PrintWriter pw = response.getWriter();
+
+    if (success) {
+      pw.printf("Cart created:\n\n%s", cartJson);
+    } else {
+      pw.printf("Cart not created:\n\n%s", cartJson);
     }
+    pw.flush();
 
-    SpaceDocument cartPayload = createPayload(cartJson);
+    pw.close();
 
-    cartService.createCart(cartId, cartPayload);
+//    int cartId = getCartId(cartJson);
+//    System.out.println("Creating cart " + cartId);
+//
+//    if (cartService.isCartExist(cartId)) {
+//      System.out.println("A cart with id " + cartId + " already exists");
+//      return new ResponseEntity<Void>(HttpStatus.CONFLICT);
+//    }
+//
+//    SpaceDocument cartPayload = createPayload(cartJson);
+//
+//    cartService.createCart(cartId, cartPayload);
 
-    HttpHeaders headers = new HttpHeaders();
-    return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
+    return null;
   }
 
   // TODO
@@ -63,20 +100,36 @@ public class CartController {
   }
 
   @RequestMapping(value = "/cart/{id}", method = RequestMethod.PUT)
-  public ResponseEntity<Cart> updateCart(@PathVariable("id") int id, @RequestBody String cartJson) {
-    System.out.println("Updating User " + id);
+  public String updateCart(
+          @PathVariable("id") int id,
+          @RequestBody String cartJson,
+          HttpServletResponse response
+  ) throws IOException
+  {
 
-    Cart currentCart = cartService.getCart(id);
+    System.out.println("Updating cart " + id);
 
-    if (currentCart==null) {
-      System.out.println("Cart with id " + id + " not found");
-      return new ResponseEntity<Cart>(HttpStatus.NOT_FOUND);
-    }
+    System.out.printf("cartJson => %s\n", cartJson);
 
-    SpaceDocument cartPayload = createPayload(currentCart);
+    PrintWriter pw = response.getWriter();
 
-    cartService.updateCart(id, cartPayload);
-    return new ResponseEntity<Cart>(currentCart, HttpStatus.OK);
+    pw.println(cartJson);
+    pw.flush();
+
+    pw.close();
+
+//    Cart currentCart = cartService.getCart(id);
+//
+//    if (currentCart==null) {
+//      System.out.println("Cart with id " + id + " not found");
+//      return new ResponseEntity<Cart>(HttpStatus.NOT_FOUND);
+//    }
+//
+//    SpaceDocument cartPayload = createPayload(currentCart);
+//
+//    cartService.updateCart(id, cartPayload);
+
+    return null;
   }
 
   // TODO

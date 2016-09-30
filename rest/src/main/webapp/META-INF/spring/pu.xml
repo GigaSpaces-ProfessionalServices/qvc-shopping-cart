@@ -31,6 +31,9 @@
   <!-- Define the GigaSpace instance that the application will use to access the space  -->
   <os-core:giga-space id="gigaSpace" space="space"/>
 
-  <bean id="cartService" class="com.qvc.shoppingcart.space.CartService" />
+  <os-remoting:executor-proxy id="cartService"
+                              giga-space="gigaSpace"
+                              interface="com.qvc.shoppingcart.service.ICartService">
+  </os-remoting:executor-proxy>
 
 </beans>
