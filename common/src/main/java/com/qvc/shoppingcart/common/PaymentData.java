@@ -18,10 +18,6 @@ public class PaymentData implements Serializable {
 
   private DocumentProperties info;
 
-  public PaymentData(DocumentProperties info) {
-    this.info = info;
-  }
-
   public PaymentData(String paymentJson) {
     JsonParser parser = new JsonParser();
     JsonObject jsonObject = (JsonObject) parser.parse(paymentJson);
