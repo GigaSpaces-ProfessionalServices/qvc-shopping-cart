@@ -12,6 +12,7 @@ public class Cart {
   private String user;
   private Integer id;
   private DocumentProperties payload;
+  private PaymentData paymentData;
 
   public String getUser() {
     return user;
@@ -40,18 +41,12 @@ public class Cart {
     this.payload = payload;
   }
 
-  public String toJson() {
-    StringBuilder sb = new StringBuilder("{");
-    sb.append("user:'").append(user).append("',");
-    sb.append("id:").append(id).append(",");
-    String payloadJson = getJsonFromDocumentProperties(payload);
-    sb.append("payload:").append(payloadJson);
-    sb.append("}");
-    return sb.toString();
+  public PaymentData getPaymentData() {
+    return paymentData;
   }
 
-  // TODO
-  private String getJsonFromDocumentProperties(DocumentProperties payload) {
-    return null;
+  public void setPaymentData(PaymentData paymentData) {
+    this.paymentData = paymentData;
   }
+
 }

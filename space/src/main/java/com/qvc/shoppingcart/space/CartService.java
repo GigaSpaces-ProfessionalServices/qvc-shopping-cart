@@ -7,6 +7,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.qvc.shoppingcart.common.Cart;
+import com.qvc.shoppingcart.common.PaymentData;
 import com.qvc.shoppingcart.service.ICartService;
 import org.openspaces.core.GigaSpace;
 import org.openspaces.remoting.RemotingService;
@@ -56,6 +57,13 @@ public class CartService implements ICartService {
 //		gigaSpace.write(mailing...);
     System.out.printf("Cart [%d] modified using: %s\n", cartId, cartJson);
     return true;
+  }
+
+  public void updatePaymentData(int cartId, String paymentJson) {
+    PaymentData paymentData = new PaymentData(paymentJson);
+    Cart cart = gigaSpace.readById(Cart.class, cartId);
+    cart.setPaymentData(paymentData);
+    gigaSpace.write(cart);
   }
 
   public boolean createCart(int id, String payloadJson) {

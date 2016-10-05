@@ -14,6 +14,8 @@ public interface ICartService {
 
   boolean updateCart(@Routing int cartId, String cartJson);
 
+  void updatePaymentData(@Routing int cartId, String paymentJson);
+
   // Broadcast operations
   void mergeCarts(List<Integer> cartIds);
 }

@@ -37,7 +37,7 @@ public class CartController {
     String cartJson = cartService.getCart(id);
     pw.print(cartJson);
 
-//    pw.printf("Cart with id [%d]", id);
+    System.out.printf("Cart with id [%d]", id);
 
     pw.flush();
 
@@ -85,6 +85,27 @@ public class CartController {
 //    SpaceDocument cartPayload = createPayload(cartJson);
 //
 //    cartService.createCart(cartId, cartPayload);
+
+    return null;
+  }
+
+  @RequestMapping(value = "/updatePaymentData/{id}", method = RequestMethod.POST)
+  public String updatePaymentData(
+          @PathVariable("id") int cartId,
+          @RequestBody String paymentJson,
+          HttpServletResponse response
+  ) throws IOException
+  {
+    System.out.printf("paymentJson => %s\n", paymentJson);
+
+    cartService.updatePaymentData(cartId, paymentJson);
+
+    PrintWriter pw = response.getWriter();
+
+    pw.printf("payment info updated for cart %d\n", cartId);
+    pw.flush();
+
+    pw.close();
 
     return null;
   }
