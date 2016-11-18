@@ -19,7 +19,10 @@
     </pluginRepository>
   </pluginRepositories>
   <properties>
-    <gsVersion>12.0.0</gsVersion>
+    <maven.compiler.source>1.7</maven.compiler.source>
+    <maven.compiler.target>1.7</maven.compiler.target>
+    <gsVersion>10.2.0-13800-RELEASE</gsVersion>
+    <xap.spring.session.version>1.0</xap.spring.session.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   <modules>
@@ -30,10 +33,14 @@
   </modules>
   <dependencies>
     <dependency>
-      <groupId>org.gigaspaces</groupId>
-      <artifactId>xap-openspaces</artifactId>
-      <version>12.0.0</version>
-      <scope>provided</scope>
+      <artifactId>gs-runtime</artifactId>
+      <groupId>com.gigaspaces</groupId>
+      <version>${gsVersion}</version>
+    </dependency>
+    <dependency>
+      <artifactId>gs-openspaces</artifactId>
+      <groupId>com.gigaspaces</groupId>
+      <version>${gsVersion}</version>
     </dependency>
     <dependency>
       <groupId>com.google.code.gson</groupId>
@@ -93,9 +100,9 @@
       </activation>
       <dependencies>
         <dependency>
-          <groupId>org.gigaspaces</groupId>
-          <artifactId>xap-openspaces</artifactId>
-          <version>12.0.0</version>
+          <artifactId>gs-openspaces</artifactId>
+          <groupId>com.gigaspaces</groupId>
+          <version>${gsVersion}</version>
           <scope>compile</scope>
         </dependency>
       </dependencies>
@@ -109,9 +116,9 @@
       <dependencyManagement>
         <dependencies>
           <dependency>
-            <groupId>org.gigaspaces</groupId>
-            <artifactId>xap-openspaces</artifactId>
-            <version>12.0.0</version>
+            <artifactId>gs-openspaces</artifactId>
+            <groupId>com.gigaspaces</groupId>
+            <version>${gsVersion}</version>
             <type>pom</type>
             <scope>import</scope>
           </dependency>
@@ -119,6 +126,5 @@
       </dependencyManagement>
     </profile>
   </profiles>
-
 
 </project>
