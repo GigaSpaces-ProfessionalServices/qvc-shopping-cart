@@ -1,18 +1,23 @@
 package com.qvc.shoppingcart.common;
 
 import com.gigaspaces.annotation.pojo.SpaceClass;
-import com.gigaspaces.annotation.pojo.SpaceDynamicProperties;
 import com.gigaspaces.annotation.pojo.SpaceId;
 import com.gigaspaces.annotation.pojo.SpaceRouting;
-import com.gigaspaces.document.DocumentProperties;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @SpaceClass
 public class Cart {
 
   private String user;
-  private Integer id;
-  private DocumentProperties payload;
+  private Long id;
+  private List<String> lineItemIds;
   private PaymentData paymentData;
+
+  public Cart() {
+    lineItemIds = new ArrayList<>();
+  }
 
   public String getUser() {
     return user;
@@ -24,21 +29,12 @@ public class Cart {
 
   @SpaceId
   @SpaceRouting
-  public Integer getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(Integer id) {
+  public void setId(Long id) {
     this.id = id;
-  }
-
-  @SpaceDynamicProperties
-  public DocumentProperties getPayload() {
-    return payload;
-  }
-
-  public void setPayload(DocumentProperties payload) {
-    this.payload = payload;
   }
 
   public PaymentData getPaymentData() {
@@ -49,4 +45,31 @@ public class Cart {
     this.paymentData = paymentData;
   }
 
+  public void setLineItemIds(List<String> lineItemIds) {
+    this.lineItemIds = lineItemIds;
+  }
+
+  public boolean dropLineItem(String lineItemId) {
+    boolean rv = false;
+    String idOfLineItemToBeRemoved = null;
+    for (String lid : lineItemIds) {
+      if (lid.equals(lineItemId)) {
+        idOfLineItemToBeRemoved = lid;
+        break;
+      }
+    }
+    if (idOfLineItemToBeRemoved != null) {
+      lineItemIds.remove(idOfLineItemToBeRemoved);
+      rv = true;
+    }
+    return rv;
+  }
+
+  public void addLineItemId(String lineItemId) {
+    lineItemIds.add(lineItemId);
+  }
+
+  public List<String> getLineItemIds() {
+    return lineItemIds;
+  }
 }

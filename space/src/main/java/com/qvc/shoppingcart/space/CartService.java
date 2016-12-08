@@ -7,14 +7,18 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.qvc.shoppingcart.common.Cart;
+import com.qvc.shoppingcart.common.LineItem;
 import com.qvc.shoppingcart.common.PaymentData;
 import com.qvc.shoppingcart.service.ICartService;
+import com.qvc.shoppingcart.service.ILineItemService;
 import org.openspaces.core.GigaSpace;
 import org.openspaces.remoting.RemotingService;
 import org.openspaces.remoting.Routing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import serp.bytecode.SourceFile;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -26,13 +30,21 @@ public class CartService implements ICartService {
   @Autowired
   GigaSpace gigaSpace;
 
-  public String getCart(@Routing int cartId) {
+  @Autowired
+  ILineItemService lineItemService;
+
+  public String getCart(@Routing long cartId) {
     System.out.printf("GETTING CART [%d]\n", cartId);
     Cart cart = gigaSpace.readById(Cart.class, cartId);
-    Integer id = cart.getId();
+    Long id = cart.getId();
     String user = cart.getUser();
     Gson gson = new Gson();
-    String itemsJson = gson.toJson(cart.getPayload().get("items"));
+    List<LineItem> lineItems = new ArrayList<>();
+    for (String lineItemId : cart.getLineItemIds()) {
+      LineItem lineItem = gigaSpace.readById(LineItem.class, lineItemId);
+      lineItems.add(lineItem);
+    }
+    String itemsJson = gson.toJson(lineItems);
     StringBuilder sb = new StringBuilder("{");
     sb.append("'id':").append(id).append(",").append("'user':").append(user).append(",").append("'items':").append(itemsJson);
     sb.append("}");
@@ -42,15 +54,11 @@ public class CartService implements ICartService {
   }
 
   @Override
-  public boolean isCartExist(int cartId) {
+  public boolean isCartExist(long cartId) {
     return false;
   }
 
-  @Override
-  public void mergeCarts(List<Integer> cartIds) {
-  }
-
-  public boolean updateCart(@Routing int cartId, String cartJson) {
+  public boolean updateCart(@Routing long cartId, String cartJson) {
 //    examine the contents of cartPayload
 //		gigaSpace.write(shipping, );
 //		gigaSpace.write(address);
@@ -59,37 +67,44 @@ public class CartService implements ICartService {
     return true;
   }
 
-  public void updatePaymentData(int cartId, String paymentJson) {
+  public void updatePaymentData(long cartId, String paymentJson) {
     PaymentData paymentData = new PaymentData(paymentJson);
     Cart cart = gigaSpace.readById(Cart.class, cartId);
     cart.setPaymentData(paymentData);
     gigaSpace.write(cart);
   }
 
-  public boolean createCart(int id, String payloadJson) {
+  public boolean createCart(@Routing long id, String itemListJson) {
     Cart cart = new Cart();
     cart.setId(id);
-    DocumentProperties dpPayload = new DocumentProperties();
     JsonParser parser = new JsonParser();
-    JsonObject jsonObject = (JsonObject) parser.parse(payloadJson);
+    JsonObject jsonObject = (JsonObject) parser.parse(itemListJson);
     String user = jsonObject.get("user").getAsString();
     cart.setUser(user);
     JsonArray itemArray = jsonObject.getAsJsonArray("items");
-    List<DocumentProperties> dpItemList = new LinkedList<>();
     for (JsonElement item : itemArray) {
       JsonObject itemObject = item.getAsJsonObject();
-      String name = itemObject.get("name").getAsString();
-      Integer count = itemObject.get("count").getAsInt();
-      DocumentProperties dpItem = new DocumentProperties();
-      dpItem.put("name", name);
-      dpItem.put("count", count);
-      dpItemList.add(dpItem);
+      String name = itemObject.get(LineItem.NAME).getAsString();
+      Integer count = itemObject.get(LineItem.QUANTITY).getAsInt();
+      DocumentProperties dpLineItem = new DocumentProperties();
+      dpLineItem.put(LineItem.NAME, name);
+      dpLineItem.put(LineItem.QUANTITY, count);
+      String lineItemId = lineItemService.create(id, dpLineItem);
+      System.out.printf("add lineItem with id [%s]\n", lineItemId);
+      cart.addLineItemId(lineItemId);
     }
-    dpPayload.put("items", dpItemList);
-    cart.setPayload(dpPayload);
     gigaSpace.write(cart);
-    System.out.printf("Cart [%d] created using: %s\n", id, payloadJson);
+    System.out.printf("Cart [%d] created using: %s\n", id, itemListJson);
     return true;
   }
 
+  @Override
+  public void scan() {
+    lineItemService.scan();
+  }
+
+  @Override
+  public void touch(String lineItemId) {
+    lineItemService.touch(lineItemId);
+  }
 }

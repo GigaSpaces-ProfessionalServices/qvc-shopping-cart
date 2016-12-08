@@ -6,16 +6,18 @@ import java.util.List;
 
 public interface ICartService {
 
-  String getCart(@Routing int cartId);
+  String getCart(@Routing long cartId);
 
-  boolean isCartExist(int cartId);
+  boolean isCartExist(long cartId);
 
-  boolean createCart(@Routing int cartId, String cartJson);
+  boolean createCart(@Routing long cartId, String cartJson);
 
-  boolean updateCart(@Routing int cartId, String cartJson);
+  boolean updateCart(@Routing long cartId, String cartJson);
 
-  void updatePaymentData(@Routing int cartId, String paymentJson);
+  void updatePaymentData(@Routing long cartId, String paymentJson);
 
-  // Broadcast operations
-  void mergeCarts(List<Integer> cartIds);
+  void scan();
+
+  void touch(String lineItemId);
+
 }

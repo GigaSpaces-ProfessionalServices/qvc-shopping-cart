@@ -41,12 +41,40 @@ public class CartController {
 
     pw.flush();
 
-//    Cart cart = cartService.getCart(id);
-//    if (cart == null) {
-//      System.out.println("Cart with id " + id + " not found");
-//      return new ResponseEntity<Cart>(HttpStatus.NOT_FOUND);
-//    }
+    pw.close();
 
+    return null;
+  }
+
+  @RequestMapping(value = "/scan", method = RequestMethod.GET)
+  public String scan(
+          HttpServletResponse response
+  ) throws IOException
+  {
+    PrintWriter pw = response.getWriter();
+
+    cartService.scan();
+    pw.print("scan complete");
+
+    pw.flush();
+    pw.close();
+
+    return null;
+  }
+
+  @RequestMapping(value = "/touch/{lineItemId}", method = RequestMethod.GET)
+  public String scan(
+          @PathVariable("lineItemId") String lineItemId,
+          HttpServletResponse response
+  ) throws IOException
+  {
+    PrintWriter pw = response.getWriter();
+
+    System.out.printf("CartController => lineItemId = [%s]\n", lineItemId);
+    cartService.touch(lineItemId);
+    pw.printf("lineitem [%s] touched", lineItemId);
+
+    pw.flush();
     pw.close();
 
     return null;
@@ -70,21 +98,9 @@ public class CartController {
     } else {
       pw.printf("Cart not created:\n\n%s", cartJson);
     }
+
     pw.flush();
-
     pw.close();
-
-//    int cartId = getCartId(cartJson);
-//    System.out.println("Creating cart " + cartId);
-//
-//    if (cartService.isCartExist(cartId)) {
-//      System.out.println("A cart with id " + cartId + " already exists");
-//      return new ResponseEntity<Void>(HttpStatus.CONFLICT);
-//    }
-//
-//    SpaceDocument cartPayload = createPayload(cartJson);
-//
-//    cartService.createCart(cartId, cartPayload);
 
     return null;
   }
@@ -135,20 +151,9 @@ public class CartController {
     PrintWriter pw = response.getWriter();
 
     pw.println(cartJson);
+
     pw.flush();
-
     pw.close();
-
-//    Cart currentCart = cartService.getCart(id);
-//
-//    if (currentCart==null) {
-//      System.out.println("Cart with id " + id + " not found");
-//      return new ResponseEntity<Cart>(HttpStatus.NOT_FOUND);
-//    }
-//
-//    SpaceDocument cartPayload = createPayload(currentCart);
-//
-//    cartService.updateCart(id, cartPayload);
 
     return null;
   }
