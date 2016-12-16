@@ -14,6 +14,7 @@ public class Cart {
   private Long id;
   private List<String> lineItemIds;
   private PaymentData paymentData;
+  private Address shippingAddress;
 
   public Cart() {
     lineItemIds = new ArrayList<>();
@@ -47,6 +48,14 @@ public class Cart {
 
   public void setLineItemIds(List<String> lineItemIds) {
     this.lineItemIds = lineItemIds;
+  }
+
+  public Address getShippingAddress() {
+    return shippingAddress;
+  }
+
+  public void setShippingAddress(Address shippingAddress) {
+    this.shippingAddress = shippingAddress;
   }
 
   public boolean dropLineItem(String lineItemId) {

@@ -6,6 +6,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.qvc.shoppingcart.common.Address;
 import com.qvc.shoppingcart.common.Cart;
 import com.qvc.shoppingcart.common.LineItem;
 import com.qvc.shoppingcart.common.PaymentData;
@@ -16,10 +17,8 @@ import org.openspaces.remoting.RemotingService;
 import org.openspaces.remoting.Routing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-import serp.bytecode.SourceFile;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 // This lives within each partition
@@ -81,6 +80,12 @@ public class CartService implements ICartService {
     JsonObject jsonObject = (JsonObject) parser.parse(itemListJson);
     String user = jsonObject.get("user").getAsString();
     cart.setUser(user);
+    JsonObject address = jsonObject.getAsJsonObject("address");
+    String street = address.get(Address.STREET).getAsString();
+    String city = address.get(Address.CITY).getAsString();
+    String country = address.get(Address.COUNTRY).getAsString();
+    Address shippingAddress = new Address(street, city, country);
+    cart.setShippingAddress(shippingAddress);
     JsonArray itemArray = jsonObject.getAsJsonArray("items");
     for (JsonElement item : itemArray) {
       JsonObject itemObject = item.getAsJsonObject();
