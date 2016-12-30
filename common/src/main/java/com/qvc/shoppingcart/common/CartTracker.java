@@ -9,18 +9,18 @@ import com.gigaspaces.metadata.index.SpaceIndexType;
  * Created by sudip on 11/22/2016.
  */
 @SpaceClass
-public class LineItemTracker {
+public class CartTracker {
 
-  private String lineItemId;
+  private String cartId;
   private long expirationTimestamp;
 
   @SpaceId
-  public String getLineItemId() {
-    return lineItemId;
+  public String getCartId() {
+    return cartId;
   }
 
-  public void setLineItemId(String lineItemId) {
-    this.lineItemId = lineItemId;
+  public void setCartId(String cartId) {
+    this.cartId = cartId;
   }
 
   @SpaceIndex(type = SpaceIndexType.EXTENDED)
@@ -32,11 +32,11 @@ public class LineItemTracker {
     expirationTimestamp = timestamp;
   }
 
-  public LineItemTracker(String lineItemId, long expirationTimestamp) {
-    this.lineItemId = lineItemId;
+  public CartTracker(String cartId, long expirationTimestamp) {
+    this.cartId = cartId;
     this.expirationTimestamp = expirationTimestamp;
   }
 
-  public LineItemTracker() {
+  public CartTracker() {
   }
 }

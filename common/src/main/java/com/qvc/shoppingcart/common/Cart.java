@@ -3,6 +3,8 @@ package com.qvc.shoppingcart.common;
 import com.gigaspaces.annotation.pojo.SpaceClass;
 import com.gigaspaces.annotation.pojo.SpaceId;
 import com.gigaspaces.annotation.pojo.SpaceRouting;
+import com.gigaspaces.annotation.pojo.SpaceStorageType;
+import com.gigaspaces.metadata.StorageType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,12 +14,13 @@ public class Cart {
 
   private String user;
   private Long id;
-  private List<String> lineItemIds;
+  private List<LineItem> lineItems;
   private PaymentData paymentData;
   private Address shippingAddress;
+  private Cost prize;
 
   public Cart() {
-    lineItemIds = new ArrayList<>();
+    lineItems = new ArrayList<>();
   }
 
   public String getUser() {
@@ -46,10 +49,7 @@ public class Cart {
     this.paymentData = paymentData;
   }
 
-  public void setLineItemIds(List<String> lineItemIds) {
-    this.lineItemIds = lineItemIds;
-  }
-
+  @SpaceStorageType(storageType = StorageType.BINARY)
   public Address getShippingAddress() {
     return shippingAddress;
   }
@@ -58,27 +58,41 @@ public class Cart {
     this.shippingAddress = shippingAddress;
   }
 
+  @SpaceStorageType(storageType = StorageType.BINARY)
+  public Cost getPrize() {
+    return prize;
+  }
+
+  public void setPrize(Cost prize) {
+    this.prize = prize;
+  }
+
+  public List<LineItem> getLineItems() {
+    return lineItems;
+  }
+
+  public void setLineItems(List<LineItem> lineItems) {
+    this.lineItems = lineItems;
+  }
+
   public boolean dropLineItem(String lineItemId) {
     boolean rv = false;
-    String idOfLineItemToBeRemoved = null;
-    for (String lid : lineItemIds) {
-      if (lid.equals(lineItemId)) {
-        idOfLineItemToBeRemoved = lid;
+    LineItem lineItemToBeRemoved = null;
+    for (LineItem lineItem : lineItems) {
+      if (lineItemId.equals(lineItem.getId())) {
+        lineItemToBeRemoved = lineItem;
         break;
       }
     }
-    if (idOfLineItemToBeRemoved != null) {
-      lineItemIds.remove(idOfLineItemToBeRemoved);
+    if (lineItemToBeRemoved != null) {
+      lineItems.remove(lineItemToBeRemoved);
       rv = true;
     }
     return rv;
   }
 
-  public void addLineItemId(String lineItemId) {
-    lineItemIds.add(lineItemId);
+  public void addLineItem(LineItem lineItem) {
+    lineItems.add(lineItem);
   }
 
-  public List<String> getLineItemIds() {
-    return lineItemIds;
-  }
 }

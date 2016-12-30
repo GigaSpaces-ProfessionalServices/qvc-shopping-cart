@@ -3,11 +3,13 @@ package com.qvc.shoppingcart.common;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
+import com.gigaspaces.document.DocumentProperties;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+import java.math.BigDecimal;
 import java.util.function.BiConsumer;
 
 public class KryoSerializers {
@@ -15,6 +17,10 @@ public class KryoSerializers {
   private static final ThreadLocal<Kryo> kryos = new ThreadLocal<Kryo>() {
     protected Kryo initialValue() {
       Kryo kryo = new Kryo();
+      kryo.register(Address.class);
+      kryo.register(Cost.class);
+      kryo.register(BigDecimal.class);
+      kryo.register(DocumentProperties.class);
       return kryo;
     };
   };

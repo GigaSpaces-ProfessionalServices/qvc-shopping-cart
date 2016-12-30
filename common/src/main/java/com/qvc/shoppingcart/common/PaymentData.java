@@ -6,9 +6,6 @@ import com.google.gson.JsonParser;
 
 import java.io.Serializable;
 
-/**
- * Created by sudip on 10/4/2016.
- */
 public class PaymentData implements Serializable {
 
   public static final String CARD_NUMBER = "cardNumber";
@@ -31,6 +28,9 @@ public class PaymentData implements Serializable {
             .setProperty(VALID_UPTO, validUpto)
             .setProperty(CVV_CODE, cvvCode)
     ;
+  }
+
+  public PaymentData() {
   }
 
   public DocumentProperties getInfo() {
