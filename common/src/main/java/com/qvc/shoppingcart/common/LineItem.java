@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@SpaceClass
 public class LineItem implements Externalizable {
 
   public static final String NAME = "name";
