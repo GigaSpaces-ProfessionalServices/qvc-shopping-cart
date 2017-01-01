@@ -13,19 +13,19 @@ Example calls are as follows:
 	</tr>
 	<tr>
 		<td>http://localhost:8093/shoppingcart-rest/cart/101</td>
-		<td>{'id':101,'user':'sudip','address':{'street':'beekman road','city':'kendall park','country':'usa'},'prize':{'name':'christmas surprise','amount':100},'items':[{'name':'book','count':1,'discounts':[{'name':'d1','amount':5},{'name':'d2','amount':2}]},{'name':'toy','count':4,'discounts':[{'name':'d1','amount':7},{'name':'d2','amount':4}]}]}</td>
+		<td>{'id':101,'user':'sudip','address':{'street':'abc','city':'south brunswick','country':'usa'},'items':[{'name':'book','count':1},{'name':'toy','count':4}]}</td>
 	</tr>
 	<tr>
 		<td>http://localhost:8093/shoppingcart-rest/cart/102</td>
-		<td>{'id':102,'user':'chris','address':{'street':'mno','city':'columbia','country':'usa'},'items':[{'name':'book','count':3,'discounts':[{'name':'d1','amount':5},{'name':'d2','amount':2}]},{'name':'toy','count':9,'discounts':[{'name':'d1','amount':5},{'name':'d2','amount':2}]}]}</td>
+		<td>{'id':102,'user':'chris','address':{'street':'mno','city':'columbia','country':'usa'},'items':[{'name':'book','count':3},{'name':'toy','count':9}]}</td>
 	</tr>
 	<tr>
 		<td>http://localhost:8093/shoppingcart-rest/cart/103</td>
-		<td>{'id':103,'user':'ali','address':{'street':'pqr','city':'new york','country':'usa'},'items':[{'name':'book','count':3,'discounts':[{'name':'d1','amount':5},{'name':'d2','amount':2}]},{'name':'toy','count':9,'discounts':[{'name':'d1','amount':5},{'name':'d2','amount':2}]},{'name':'cd','count':4,'discounts':[{'name':'d1','amount':5},{'name':'d2','amount':2}]}]}</td>
+		<td>{'id':103,'user':'ali','address':{'street':'pqr','city':'new york','country':'usa'},'items':[{'name':'book','count':3},{'name':'toy','count':9},{'name':'cd','count':4}]}</td>
 	</tr>
 	<tr>
 		<td>http://localhost:8093/shoppingcart-rest/cart/104</td>
-		<td>{'id':104,'user':'rob','address':{'street':'xyz','city':'new york','country':'usa'},'items':[{'name':'cd','count':3,'discounts':[{'name':'d1','amount':5},{'name':'d2','amount':2}]},{'name':'toy','count':3,'discounts':[{'name':'d1','amount':4},{'name':'d2','amount':2}]},{'name':'software','count':1,'discounts':[{'name':'d1','amount':6},{'name':'d2','amount':2}]}]}</td>
+		<td>{'id':104,'user':'rob','address':{'street':'xyz','city':'new york','country':'usa'},'items':[{'name':'cd','count':3},{'name':'toy','count':3},{'name':'software','count':1}]}</td>
 	</tr>
 	<tr>
 		<td>http://localhost:8093/shoppingcart-rest/updatePaymentData/101</td>
@@ -52,3 +52,6 @@ select uid,* from com.qvc.shoppingcart.common.Cart WHERE paymentData.info.holder
 
 select uid,* from com.qvc.shoppingcart.common.Cart WHERE paymentData.info.holderName in ('Sudip Bhattacharya', 'Rob Ray')
 </pre>
+
+
+

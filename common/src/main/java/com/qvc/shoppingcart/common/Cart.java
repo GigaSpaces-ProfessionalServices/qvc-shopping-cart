@@ -16,7 +16,8 @@ public class Cart {
   private Long id;
   private List<LineItem> lineItems;
   private PaymentData paymentData;
-  private Address shippingAddress;
+  private ShippingAddress shippingAddress;
+  private BillingAddress billingAddress;
   private Cost prize;
 
   public Cart() {
@@ -50,12 +51,21 @@ public class Cart {
   }
 
   @SpaceStorageType(storageType = StorageType.BINARY)
-  public Address getShippingAddress() {
+  public ShippingAddress getShippingAddress() {
     return shippingAddress;
   }
 
-  public void setShippingAddress(Address shippingAddress) {
+  public void setShippingAddress(ShippingAddress shippingAddress) {
     this.shippingAddress = shippingAddress;
+  }
+
+  @SpaceStorageType(storageType = StorageType.BINARY)
+  public BillingAddress getBillingAddress() {
+    return billingAddress;
+  }
+
+  public void setBillingAddress(BillingAddress billingAddress) {
+    this.billingAddress = billingAddress;
   }
 
   @SpaceStorageType(storageType = StorageType.BINARY)

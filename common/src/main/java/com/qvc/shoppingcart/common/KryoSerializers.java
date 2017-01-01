@@ -18,6 +18,8 @@ public class KryoSerializers {
     protected Kryo initialValue() {
       Kryo kryo = new Kryo();
       kryo.register(Address.class);
+      kryo.register(ShippingAddress.class);
+      kryo.register(BillingAddress.class);
       kryo.register(Cost.class);
       kryo.register(BigDecimal.class);
       kryo.register(DocumentProperties.class);
@@ -27,7 +29,7 @@ public class KryoSerializers {
 
   public static void serialize(final ObjectOutput out, final BiConsumer<Kryo, Output> serialize) throws IOException {
     Kryo kryo = kryos.get();
-    ByteArrayOutputStream byteOutStream = new ByteArrayOutputStream(8192);
+    ByteArrayOutputStream byteOutStream = new ByteArrayOutputStream();
     Output output = new Output(byteOutStream);
     serialize.accept(kryo, output);
     output.close();

@@ -2,8 +2,6 @@ package com.qvc.shoppingcart.service;
 
 import org.openspaces.remoting.Routing;
 
-import java.util.List;
-
 public interface ICartService {
 
   String getCart(@Routing long cartId);

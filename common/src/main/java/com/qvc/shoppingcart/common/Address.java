@@ -55,13 +55,14 @@ public class Address implements Externalizable {
     KryoSerializers.deserialize(stream, this::read);
   }
 
-  private void write(final Kryo kryo, final Output output) {
+  protected void write(final Kryo kryo, final Output output) {
     output.writeString(street);
     output.writeString(city);
     output.writeString(country);
+    System.out.printf("street:%s, city:%s, country: %s\n", street, city, country);
   }
 
-  private void read(final Kryo kryo, final Input input) {
+  protected void read(final Kryo kryo, final Input input) {
     street = input.readString();
     city = input.readString();
     country = input.readString();
