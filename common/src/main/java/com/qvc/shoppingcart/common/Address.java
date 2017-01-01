@@ -59,7 +59,6 @@ public class Address implements Externalizable {
     output.writeString(street);
     output.writeString(city);
     output.writeString(country);
-    System.out.printf("street:%s, city:%s, country: %s\n", street, city, country);
   }
 
   protected void read(final Kryo kryo, final Input input) {

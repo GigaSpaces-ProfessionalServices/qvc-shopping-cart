@@ -42,7 +42,6 @@ public class ShippingAddress extends Address implements Externalizable {
   protected void write(final Kryo kryo, final Output output) {
     super.write(kryo, output);
     output.writeString(type);
-    System.out.printf("type:%s\n", type);
   }
 
   protected void read(final Kryo kryo, final Input input) {

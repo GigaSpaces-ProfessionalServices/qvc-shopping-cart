@@ -33,7 +33,6 @@ public class BillingAddress extends Address implements Externalizable {
 
   protected void write(final Kryo kryo, final Output output) {
     super.write(kryo, output);
-    System.out.printf("billedParty:%s\n", billedParty);
     output.writeString(billedParty);
   }
 
