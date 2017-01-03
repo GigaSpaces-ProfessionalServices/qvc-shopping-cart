@@ -21,6 +21,8 @@ Example calls are as follows:
 	</tr>
 </table>
 
+The files <b>asm-5.0.4.jar</b>, <b>kryo-4.0.0.jar</b>, <b>minlog-1.2.jar</b>, <b>objenesis-2.4.jar</b> and <b>reflectasm-1.11.3.jar</b> need to be put on the <b>platform/ext</b> sub-folder of the <b>lib</b> folder in the XAP distribution.
+
 It is possible to refer to a key inside a dynamic property field in a query. For example, the following queries work fine:
  
 <pre>
